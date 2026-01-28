@@ -1,0 +1,27 @@
+// كود حقيقي لإرسال لـ Telegram
+async function sendToTelegramBot(reservation) {
+    const token = "YOUR_BOT_TOKEN";
+    const chatId = "YOUR_CHAT_ID";
+    
+    const message = `🎉 حجز جديد في قاعة النخيل 🎉
+    
+👰 العروسين: ${reservation.groomName} & ${reservation.brideName}
+📅 التاريخ: ${formatDate(reservation.eventDate)}
+💰 الإجمالي: ${reservation.totalAmount.toLocaleString()} ريال
+💵 المدفوع: ${reservation.paidAmount.toLocaleString()} ريال
+📞 التواصل: ${reservation.phoneNumber}`;
+    
+    try {
+        await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                chat_id: chatId,
+                text: message,
+                parse_mode: 'HTML'
+            })
+        });
+    } catch (error) {
+        console.error('خطأ في إرسال التليجرام:', error);
+    }
+}
